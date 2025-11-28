@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STIP - Sistema de Transporte Integrado ao Público</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- ESTILOS GERAIS E RESET --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* --- LOGO E CABEÇALHO --- */
+        .logo-container {
+            text-align: center;
+            padding: 10px 0 30px;
+        }
+        
+        /* 💡 NOVO ESTILO PARA O LOGO REAL (IMG) */
+        .logo-image {
+            width: 90px; /* Define um tamanho adequado para o logo */
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* O estilo .logo-placeholder e .logo-text-stip foi removido do CSS para usar a imagem */
+        .logo-text {
+            font-size: 10px;
+            font-weight: 600;
+            margin-top: 5px;
+            color: #ffd700; /* 🟡 Alterado para amarelo */
+            line-height: 1.2;
+}
+        /* --- CARTÃO DE SALDO --- */
+        .balance-card {
+            background-color: #ffd700;
+            color: #000;
+            text-align: center;
+            padding: 30px 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .balance-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 0 15px;
+        }
+
+        .balance-value {
+            font-size: 48px;
+            font-weight: 700;
+            margin: 0 0 5px;
+            line-height: 1;
+        }
+
+        .balance-status {
+            font-size: 14px;
+            font-weight: 400;
+            margin: 0;
+        }
+        
+        /* --- GRID DE BOTÕES (MENU) --- */
+        .grid-menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .menu-card {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 20px 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            cursor: pointer;
+            min-height: 140px;
+        }
+
+        .menu-card:hover {
+            background-color: #333;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+            line-height: 1.2;
+            align-self: flex-start; 
+            text-align: left;
+        }
+
+        .card-subtitle {
+            font-size: 12px; 
+            font-weight: 400;
+            color: #aaa;
+            margin: 0; 
+            line-height: 1.2;
+        }
+
+        /* Ícones */
+        .icon {
+            color: #ffd700;
+            font-size: 28px;
+            margin-bottom: 5px;
+            align-self: flex-start;
+        }
+
+        /* Estilo específico para o card de Recarga Digital */
+        .card-recharge .card-subtitle-line {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #fff;
+        }
+
+        .card-recharge .card-subtitle-line .separator {
+            color: #444;
+            font-weight: 400;
+            margin: 0 2px;
+        }
+        
+        .card-benefits .card-subtitle,
+        .card-schedule .card-title,
+        .card-location .card-title {
+            align-self: flex-start;
+            text-align: left;
+        }
+
+        /* --- Estilos do Modal (Mantidos) --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+        
+        .modal-close {
+            background-color: #ffd700;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        /* --- PÁGINAS DE NAVEGAÇÃO --- */
+        .page {
+            display: none;
+            width: 100%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            position: sticky;
+            top: 0;
+            background-color: #000;
+            padding: 10px 0;
+            z-index: 10;
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            color: #ffd700;
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        .payment-option {
+            background-color: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .payment-option:hover {
+            background-color: #333;
+        }
+
+        .payment-icon {
+            color: #ffd700;
+            font-size: 20px;
+        }
+
+        .benefit-option {
+            background-color: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .benefit-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .benefit-status {
+            font-size: 12px;
+            color: #ffd700;
+        }
+
+        .bus-info {
+            background-color: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .bus-line {
+            font-weight: 600;
+            color: #ffd700;
+        }
+
+        .bus-time {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .bus-location {
+            background-color: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .bus-number {
+            font-weight: 600;
+            color: #ffd700;
+        }
+
+        .bus-distance {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Página Principal -->
+    <div id="main-page" class="app-container">
+        <header class="logo-container">
+            <img src="logo-stip.png" alt="Logo STIP" class="logo-image">
+            <div class="logo-text">SISTEMA DE TRANSPORTE<br>INTEGRADO AO PÚBLICO</div>
+        </header>
+
+        <section class="balance-card">
+            <p class="balance-title">Consulta de Saldo</p>
+            <p class="balance-value">R$150,50</p>
+            <p class="balance-status">Saldo em Tempo Real</p>
+        </section>
+
+        <main class="grid-menu">
+            <div class="menu-card card-recharge" onclick="navigateTo('recarga')">
+                <i class="icon fas fa-credit-card"></i> 
+                <p class="card-title">Recarga Digital</p>
+                <div class="card-subtitle-line">
+                    <span>Pix</span>
+                    <span class="separator">|</span>
+                    <span>Boleto</span>
+                    <span class="separator">|</span>
+                    <span>Cartão</span>
+                </div>
+            </div>
+
+            <div class="menu-card card-benefits" onclick="navigateTo('beneficios')">
+                <i class="icon fas fa-star"></i> 
+                <p class="card-title">Renovação de Benefícios</p>
+                <p class="card-subtitle">Passe Escolar, Vale Transporte</p>
+            </div>
+
+            <div class="menu-card card-schedule" onclick="navigateTo('horarios')">
+                <i class="icon fas fa-clock"></i> 
+                <p class="card-title">Horários e<br>Localização</p>
+            </div>
+
+            <div class="menu-card card-location" onclick="navigateTo('localizacao')">
+                <i class="icon fas fa-map-marker-alt"></i> 
+                <p class="card-title">Localização de<br>Ônibus</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Página de Recarga Digital -->
+    <div id="recarga-page" class="page">
+        <div class="page-header">
+            <button class="back-button" onclick="navigateTo('main')">←</button>
+            <h1 class="page-title">Recarga Digital</h1>
+        </div>
+        
+        <p style="margin-bottom: 20px;">Escolha a forma de pagamento:</p>
+        
+        <div class="payment-option" onclick="selectPayment('pix')">
+            <i class="payment-icon fas fa-qrcode"></i>
+            <span>Pix</span>
+        </div>
+        
+        <div class="payment-option" onclick="selectPayment('boleto')">
+            <i class="payment-icon fas fa-barcode"></i>
+            <span>Boleto Bancário</span>
+        </div>
+        
+        <div class="payment-option" onclick="selectPayment('cartao')">
+            <i class="payment-icon fas fa-credit-card"></i>
+            <span>Cartão de Crédito/Débito</span>
+        </div>
+    </div>
+
+    <!-- Página de Benefícios -->
+    <div id="beneficios-page" class="page">
+        <div class="page-header">
+            <button class="back-button" onclick="navigateTo('main')">←</button>
+            <h1 class="page-title">Meus Benefícios</h1>
+        </div>
+        
+        <div class="benefit-option">
+            <div class="benefit-title">Passe Escolar</div>
+            <div class="benefit-status">Válido até: 30/12/2024</div>
+        </div>
+        
+        <div class="benefit-option">
+            <div class="benefit-title">Vale Transporte</div>
+            <div class="benefit-status">Saldo: R$ 75,00</div>
+        </div>
+        
+        <div class="benefit-option">
+            <div class="benefit-title">Idoso</div>
+            <div class="benefit-status">Isento</div>
+        </div>
+    </div>
+
+    <!-- Página de Horários -->
+    <div id="horarios-page" class="page">
+        <div class="page-header">
+            <button class="back-button" onclick="navigateTo('main')">←</button>
+            <h1 class="page-title">Horários</h1>
+        </div>
+        
+        <div class="bus-info">
+            <div class="bus-line">Linha 101 - Centro ↔ Jardim</div>
+            <div class="bus-time">Próximo ônibus: 14:25</div>
+            <div class="bus-time">Segundo: 14:45</div>
+        </div>
+        
+        <div class="bus-info">
+            <div class="bus-line">Linha 203 - Terminal ↔ Zona Norte</div>
+            <div class="bus-time">Próximo ônibus: 14:30</div>
+            <div class="bus-time">Segundo: 15:00</div>
+        </div>
+        
+        <div class="bus-info">
+            <div class="bus-line">Linha 305 - Estação ↔ Bairro Industrial</div>
+            <div class="bus-time">Próximo ônibus: 14:35</div>
+            <div class="bus-time">Segundo: 15:05</div>
+        </div>
+
+        <div class="bus-info">
+            <div class="bus-line">Linha 402 - Shopping ↔ Universidade</div>
+            <div class="bus-time">Próximo ônibus: 14:40</div>
+            <div class="bus-time">Segundo: 15:10</div>
+        </div>
+        
+        <div class="bus-info">
+            <div class="bus-line">Linha 507 - Hospital ↔ Rodoviária</div>
+            <div class="bus-time">Próximo ônibus: 14:45</div>
+            <div class="bus-time">Segundo: 15:15</div>
+        </div>
+        
+        <div class="bus-info">
+            <div class="bus-line">Linha 608 - Parque ↔ Aeroporto</div>
+            <div class="bus-time">Próximo ônibus: 14:50</div>
+            <div class="bus-time">Segundo: 15:20</div>
+        </div>
+        
+        <div class="bus-info">
+            <div class="bus-line">Linha 714 - Praia ↔ Centro Comercial</div>
+            <div class="bus-time">Próximo ônibus: 14:55</div>
+            <div class="bus-time">Segundo: 15:25</div>
+        </div>
+        
+        <div class="bus-info">
+            <div class="bus-line">Linha 821 - Zona Leste ↔ Zona Oeste</div>
+            <div class="bus-time">Próximo ônibus: 15:00</div>
+            <div class="bus-time">Segundo: 15:30</div>
+        </div>
+        
+        <div class="bus-info">
+            <div class="bus-line">Linha 933 - Estádio ↔ Teatro Municipal</div>
+            <div class="bus-time">Próximo ônibus: 15:05</div>
+            <div class="bus-time">Segundo: 15:35</div>
+        </div>
+        
+        <div class="bus-info">
+            <div class="bus-line">Linha 1040 - Museu ↔ Biblioteca</div>
+            <div class="bus-time">Próximo ônibus: 15:10</div>
+            <div class="bus-time">Segundo: 15:40</div>
+        </div>
+    </div>
+
+    <!-- Página de Localização -->
+    <div id="localizacao-page" class="page">
+        <div class="page-header">
+            <button class="back-button" onclick="navigateTo('main')">←</button>
+            <h1 class="page-title">Localização</h1>
+        </div>
+        
+        <div class="bus-location">
+            <div class="bus-number">Ônibus 101 - Centro ↔ Jardim</div>
+            <div class="bus-distance">📍 A 2 paradas de distância</div>
+            <div class="bus-distance">⏱️ Chega em ~8 minutos</div>
+        </div>
+        
+        <div class="bus-location">
+            <div class="bus-number">Ônibus 203 - Terminal ↔ Zona Norte</div>
+            <div class="bus-distance">📍 A 5 paradas de distância</div>
+            <div class="bus-distance">⏱️ Chega em ~15 minutos</div>
+        </div>
+        
+        <div class="bus-location">
+            <div class="bus-number">Ônibus 305 - Estação ↔ Bairro Industrial</div>
+            <div class="bus-distance">📍 A 1 parada de distância</div>
+            <div class="bus-distance">⏱️ Chega em ~3 minutos</div>
+        </div>
+
+        <div class="bus-location">
+            <div class="bus-number">Ônibus 402 - Shopping ↔ Universidade</div>
+            <div class="bus-distance">📍 A 7 paradas de distância</div>
+            <div class="bus-distance">⏱️ Chega em ~20 minutos</div>
+        </div>
+        
+        <div class="bus-location">
+            <div class="bus-number">Ônibus 507 - Hospital ↔ Rodoviária</div>
+            <div class="bus-distance">📍 A 3 paradas de distância</div>
+            <div class="bus-distance">⏱️ Chega em ~10 minutos</div>
+        </div>
+        
+        <div class="bus-location">
+            <div class="bus-number">Ônibus 608 - Parque ↔ Aeroporto</div>
+            <div class="bus-distance">📍 A 12 paradas de distância</div>
+            <div class="bus-distance">⏱️ Chega em ~35 minutos</div>
+        </div>
+        
+        <div class="bus-location">
+            <div class="bus-number">Ônibus 714 - Praia ↔ Centro Comercial</div>
+            <div class="bus-distance">📍 A 4 paradas de distância</div>
+            <div class="bus-distance">⏱️ Chega em ~12 minutos</div>
+        </div>
+        
+        <div class="bus-location">
+            <div class="bus-number">Ônibus 821 - Zona Leste ↔ Zona Oeste</div>
+            <div class="bus-distance">📍 A 6 paradas de distância</div>
+            <div class="bus-distance">⏱️ Chega em ~18 minutos</div>
+        </div>
+        
+        <div class="bus-location">
+            <div class="bus-number">Ônibus 933 - Estádio ↔ Teatro Municipal</div>
+            <div class="bus-distance">📍 A 9 paradas de distância</div>
+            <div class="bus-distance">⏱️ Chega em ~25 minutos</div>
+        </div>
+        
+        <div class="bus-location">
+            <div class="bus-number">Ônibus 1040 - Museu ↔ Biblioteca</div>
+            <div class="bus-distance">📍 A 8 paradas de distância</div>
+            <div class="bus-distance">⏱️ Chega em ~22 minutos</div>
+        </div>
+    </div>
+
+    <script>
+        // Navegação entre páginas
+        function navigateTo(page) {
+            // Esconde todas as páginas
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('recarga-page').style.display = 'none';
+            document.getElementById('beneficios-page').style.display = 'none';
+            document.getElementById('horarios-page').style.display = 'none';
+            document.getElementById('localizacao-page').style.display = 'none';
+            
+            // Mostra a página solicitada
+            if (page === 'main') {
+                document.getElementById('main-page').style.display = 'block';
+            } else if (page === 'recarga') {
+                document.getElementById('recarga-page').style.display = 'block';
+            } else if (page === 'beneficios') {
+                document.getElementById('beneficios-page').style.display = 'block';
+            } else if (page === 'horarios') {
+                document.getElementById('horarios-page').style.display = 'block';
+            } else if (page === 'localizacao') {
+                document.getElementById('localizacao-page').style.display = 'block';
+            }
+        }
+
+        // Função para selecionar forma de pagamento
+        function selectPayment(type) {
+            let message = '';
+            
+            switch(type) {
+                case 'pix':
+                    message = 'QR Code PIX gerado! Escaneie para pagar.';
+                    break;
+                case 'boleto':
+                    message = 'Boleto gerado! Vencimento em 3 dias.';
+                    break;
+                case 'cartao':
+                    message = 'Redirecionando para página segura de cartão...';
+                    break;
+            }
+            
+            alert(message);
+        }
+
+        // Inicializa mostrando a página principal
+        window.onload = function() {
+            navigateTo('main');
+        }
+    </script>
+</body>
+</html>
