@@ -195,13 +195,14 @@
             margin-top: 15px;
         }
 
-        /* --- PÁGINAS DE NAVEGAÇÃO --- */
+        /* --- PÁGINAS DE NAVEGAÇÃO MELHORADAS --- */
         .page {
             display: none;
             width: 100%;
             max-width: 400px;
-            max-height: 80vh;
+            max-height: 85vh; /* Ajustado para caber melhor no celular */
             overflow-y: auto;
+            padding-bottom: 20px; /* Espaço extra no final */
         }
 
         .page-header {
@@ -211,8 +212,9 @@
             position: sticky;
             top: 0;
             background-color: #000;
-            padding: 10px 0;
+            padding: 15px 0;
             z-index: 10;
+            border-bottom: 1px solid #333;
         }
 
         .back-button {
@@ -222,83 +224,142 @@
             font-size: 24px;
             cursor: pointer;
             margin-right: 15px;
+            padding: 5px;
         }
 
         .page-title {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
             color: #ffd700;
         }
 
+        .page-content {
+            padding: 0 5px;
+        }
+
         .payment-option {
             background-color: #1a1a1a;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            padding: 18px 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            transition: all 0.2s ease;
+            border: 1px solid #333;
         }
 
         .payment-option:hover {
-            background-color: #333;
+            background-color: #222;
+            transform: translateY(-2px);
+        }
+
+        .payment-option:active {
+            transform: translateY(0);
         }
 
         .payment-icon {
             color: #ffd700;
-            font-size: 20px;
+            font-size: 22px;
+            width: 30px;
+            text-align: center;
         }
 
         .benefit-option {
             background-color: #1a1a1a;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            padding: 18px 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #333;
         }
 
         .benefit-title {
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 16px;
         }
 
         .benefit-status {
-            font-size: 12px;
+            font-size: 13px;
             color: #ffd700;
         }
 
         .bus-info {
             background-color: #1a1a1a;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            padding: 18px 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #333;
         }
 
         .bus-line {
             font-weight: 600;
             color: #ffd700;
+            font-size: 16px;
+            margin-bottom: 8px;
         }
 
         .bus-time {
             font-size: 14px;
             margin-top: 5px;
+            padding-left: 5px;
+        }
+
+        .bus-time:before {
+            content: "• ";
+            color: #ffd700;
         }
 
         .bus-location {
             background-color: #1a1a1a;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            padding: 18px 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #333;
         }
 
         .bus-number {
             font-weight: 600;
             color: #ffd700;
+            font-size: 16px;
+            margin-bottom: 10px;
         }
 
         .bus-distance {
             font-size: 14px;
-            margin-top: 5px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Scrollbar personalizada */
+        .page::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .page::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 10px;
+        }
+
+        .page::-webkit-scrollbar-thumb {
+            background: #ffd700;
+            border-radius: 10px;
+        }
+
+        .page::-webkit-scrollbar-thumb:hover {
+            background: #e6c200;
+        }
+
+        /* Indicador de scroll no final */
+        .scroll-indicator {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 10px;
+            padding: 10px;
         }
     </style>
 </head>
@@ -354,21 +415,23 @@
             <h1 class="page-title">Recarga Digital</h1>
         </div>
         
-        <p style="margin-bottom: 20px;">Escolha a forma de pagamento:</p>
-        
-        <div class="payment-option" onclick="selectPayment('pix')">
-            <i class="payment-icon fas fa-qrcode"></i>
-            <span>Pix</span>
-        </div>
-        
-        <div class="payment-option" onclick="selectPayment('boleto')">
-            <i class="payment-icon fas fa-barcode"></i>
-            <span>Boleto Bancário</span>
-        </div>
-        
-        <div class="payment-option" onclick="selectPayment('cartao')">
-            <i class="payment-icon fas fa-credit-card"></i>
-            <span>Cartão de Crédito/Débito</span>
+        <div class="page-content">
+            <p style="margin-bottom: 20px; color: #ccc;">Escolha a forma de pagamento:</p>
+            
+            <div class="payment-option" onclick="selectPayment('pix')">
+                <i class="payment-icon fas fa-qrcode"></i>
+                <span>Pix</span>
+            </div>
+            
+            <div class="payment-option" onclick="selectPayment('boleto')">
+                <i class="payment-icon fas fa-barcode"></i>
+                <span>Boleto Bancário</span>
+            </div>
+            
+            <div class="payment-option" onclick="selectPayment('cartao')">
+                <i class="payment-icon fas fa-credit-card"></i>
+                <span>Cartão de Crédito/Débito</span>
+            </div>
         </div>
     </div>
 
@@ -379,19 +442,31 @@
             <h1 class="page-title">Meus Benefícios</h1>
         </div>
         
-        <div class="benefit-option">
-            <div class="benefit-title">Passe Escolar</div>
-            <div class="benefit-status">Válido até: 30/12/2024</div>
-        </div>
-        
-        <div class="benefit-option">
-            <div class="benefit-title">Vale Transporte</div>
-            <div class="benefit-status">Saldo: R$ 75,00</div>
-        </div>
-        
-        <div class="benefit-option">
-            <div class="benefit-title">Idoso</div>
-            <div class="benefit-status">Isento</div>
+        <div class="page-content">
+            <div class="benefit-option">
+                <div class="benefit-title">Passe Escolar</div>
+                <div class="benefit-status">Válido até: 30/12/2024</div>
+            </div>
+            
+            <div class="benefit-option">
+                <div class="benefit-title">Vale Transporte</div>
+                <div class="benefit-status">Saldo: R$ 75,00</div>
+            </div>
+            
+            <div class="benefit-option">
+                <div class="benefit-title">Idoso</div>
+                <div class="benefit-status">Isento</div>
+            </div>
+            
+            <div class="benefit-option">
+                <div class="benefit-title">PCD</div>
+                <div class="benefit-status">Isento</div>
+            </div>
+            
+            <div class="benefit-option">
+                <div class="benefit-title">Estudante Universitário</div>
+                <div class="benefit-status">50% de desconto</div>
+            </div>
         </div>
     </div>
 
@@ -402,64 +477,70 @@
             <h1 class="page-title">Horários</h1>
         </div>
         
-        <div class="bus-info">
-            <div class="bus-line">Linha 101 - Centro ↔ Jardim</div>
-            <div class="bus-time">Próximo ônibus: 14:25</div>
-            <div class="bus-time">Segundo: 14:45</div>
-        </div>
-        
-        <div class="bus-info">
-            <div class="bus-line">Linha 203 - Terminal ↔ Zona Norte</div>
-            <div class="bus-time">Próximo ônibus: 14:30</div>
-            <div class="bus-time">Segundo: 15:00</div>
-        </div>
-        
-        <div class="bus-info">
-            <div class="bus-line">Linha 305 - Estação ↔ Bairro Industrial</div>
-            <div class="bus-time">Próximo ônibus: 14:35</div>
-            <div class="bus-time">Segundo: 15:05</div>
-        </div>
+        <div class="page-content">
+            <div class="bus-info">
+                <div class="bus-line">Linha 101 - Centro ↔ Jardim</div>
+                <div class="bus-time">Próximo ônibus: 14:25</div>
+                <div class="bus-time">Segundo: 14:45</div>
+            </div>
+            
+            <div class="bus-info">
+                <div class="bus-line">Linha 203 - Terminal ↔ Zona Norte</div>
+                <div class="bus-time">Próximo ônibus: 14:30</div>
+                <div class="bus-time">Segundo: 15:00</div>
+            </div>
+            
+            <div class="bus-info">
+                <div class="bus-line">Linha 305 - Estação ↔ Bairro Industrial</div>
+                <div class="bus-time">Próximo ônibus: 14:35</div>
+                <div class="bus-time">Segundo: 15:05</div>
+            </div>
 
-        <div class="bus-info">
-            <div class="bus-line">Linha 402 - Shopping ↔ Universidade</div>
-            <div class="bus-time">Próximo ônibus: 14:40</div>
-            <div class="bus-time">Segundo: 15:10</div>
-        </div>
-        
-        <div class="bus-info">
-            <div class="bus-line">Linha 507 - Hospital ↔ Rodoviária</div>
-            <div class="bus-time">Próximo ônibus: 14:45</div>
-            <div class="bus-time">Segundo: 15:15</div>
-        </div>
-        
-        <div class="bus-info">
-            <div class="bus-line">Linha 608 - Parque ↔ Aeroporto</div>
-            <div class="bus-time">Próximo ônibus: 14:50</div>
-            <div class="bus-time">Segundo: 15:20</div>
-        </div>
-        
-        <div class="bus-info">
-            <div class="bus-line">Linha 714 - Praia ↔ Centro Comercial</div>
-            <div class="bus-time">Próximo ônibus: 14:55</div>
-            <div class="bus-time">Segundo: 15:25</div>
-        </div>
-        
-        <div class="bus-info">
-            <div class="bus-line">Linha 821 - Zona Leste ↔ Zona Oeste</div>
-            <div class="bus-time">Próximo ônibus: 15:00</div>
-            <div class="bus-time">Segundo: 15:30</div>
-        </div>
-        
-        <div class="bus-info">
-            <div class="bus-line">Linha 933 - Estádio ↔ Teatro Municipal</div>
-            <div class="bus-time">Próximo ônibus: 15:05</div>
-            <div class="bus-time">Segundo: 15:35</div>
-        </div>
-        
-        <div class="bus-info">
-            <div class="bus-line">Linha 1040 - Museu ↔ Biblioteca</div>
-            <div class="bus-time">Próximo ônibus: 15:10</div>
-            <div class="bus-time">Segundo: 15:40</div>
+            <div class="bus-info">
+                <div class="bus-line">Linha 402 - Shopping ↔ Universidade</div>
+                <div class="bus-time">Próximo ônibus: 14:40</div>
+                <div class="bus-time">Segundo: 15:10</div>
+            </div>
+            
+            <div class="bus-info">
+                <div class="bus-line">Linha 507 - Hospital ↔ Rodoviária</div>
+                <div class="bus-time">Próximo ônibus: 14:45</div>
+                <div class="bus-time">Segundo: 15:15</div>
+            </div>
+            
+            <div class="bus-info">
+                <div class="bus-line">Linha 608 - Parque ↔ Aeroporto</div>
+                <div class="bus-time">Próximo ônibus: 14:50</div>
+                <div class="bus-time">Segundo: 15:20</div>
+            </div>
+            
+            <div class="bus-info">
+                <div class="bus-line">Linha 714 - Praia ↔ Centro Comercial</div>
+                <div class="bus-time">Próximo ônibus: 14:55</div>
+                <div class="bus-time">Segundo: 15:25</div>
+            </div>
+            
+            <div class="bus-info">
+                <div class="bus-line">Linha 821 - Zona Leste ↔ Zona Oeste</div>
+                <div class="bus-time">Próximo ônibus: 15:00</div>
+                <div class="bus-time">Segundo: 15:30</div>
+            </div>
+            
+            <div class="bus-info">
+                <div class="bus-line">Linha 933 - Estádio ↔ Teatro Municipal</div>
+                <div class="bus-time">Próximo ônibus: 15:05</div>
+                <div class="bus-time">Segundo: 15:35</div>
+            </div>
+            
+            <div class="bus-info">
+                <div class="bus-line">Linha 1040 - Museu ↔ Biblioteca</div>
+                <div class="bus-time">Próximo ônibus: 15:10</div>
+                <div class="bus-time">Segundo: 15:40</div>
+            </div>
+            
+            <div class="scroll-indicator">
+                ↑ Continue rolando para ver mais linhas ↑
+            </div>
         </div>
     </div>
 
@@ -470,64 +551,70 @@
             <h1 class="page-title">Localização</h1>
         </div>
         
-        <div class="bus-location">
-            <div class="bus-number">Ônibus 101 - Centro ↔ Jardim</div>
-            <div class="bus-distance">📍 A 2 paradas de distância</div>
-            <div class="bus-distance">⏱️ Chega em ~8 minutos</div>
-        </div>
-        
-        <div class="bus-location">
-            <div class="bus-number">Ônibus 203 - Terminal ↔ Zona Norte</div>
-            <div class="bus-distance">📍 A 5 paradas de distância</div>
-            <div class="bus-distance">⏱️ Chega em ~15 minutos</div>
-        </div>
-        
-        <div class="bus-location">
-            <div class="bus-number">Ônibus 305 - Estação ↔ Bairro Industrial</div>
-            <div class="bus-distance">📍 A 1 parada de distância</div>
-            <div class="bus-distance">⏱️ Chega em ~3 minutos</div>
-        </div>
+        <div class="page-content">
+            <div class="bus-location">
+                <div class="bus-number">Ônibus 101 - Centro ↔ Jardim</div>
+                <div class="bus-distance">📍 A 2 paradas de distância</div>
+                <div class="bus-distance">⏱️ Chega em ~8 minutos</div>
+            </div>
+            
+            <div class="bus-location">
+                <div class="bus-number">Ônibus 203 - Terminal ↔ Zona Norte</div>
+                <div class="bus-distance">📍 A 5 paradas de distância</div>
+                <div class="bus-distance">⏱️ Chega em ~15 minutos</div>
+            </div>
+            
+            <div class="bus-location">
+                <div class="bus-number">Ônibus 305 - Estação ↔ Bairro Industrial</div>
+                <div class="bus-distance">📍 A 1 parada de distância</div>
+                <div class="bus-distance">⏱️ Chega em ~3 minutos</div>
+            </div>
 
-        <div class="bus-location">
-            <div class="bus-number">Ônibus 402 - Shopping ↔ Universidade</div>
-            <div class="bus-distance">📍 A 7 paradas de distância</div>
-            <div class="bus-distance">⏱️ Chega em ~20 minutos</div>
-        </div>
-        
-        <div class="bus-location">
-            <div class="bus-number">Ônibus 507 - Hospital ↔ Rodoviária</div>
-            <div class="bus-distance">📍 A 3 paradas de distância</div>
-            <div class="bus-distance">⏱️ Chega em ~10 minutos</div>
-        </div>
-        
-        <div class="bus-location">
-            <div class="bus-number">Ônibus 608 - Parque ↔ Aeroporto</div>
-            <div class="bus-distance">📍 A 12 paradas de distância</div>
-            <div class="bus-distance">⏱️ Chega em ~35 minutos</div>
-        </div>
-        
-        <div class="bus-location">
-            <div class="bus-number">Ônibus 714 - Praia ↔ Centro Comercial</div>
-            <div class="bus-distance">📍 A 4 paradas de distância</div>
-            <div class="bus-distance">⏱️ Chega em ~12 minutos</div>
-        </div>
-        
-        <div class="bus-location">
-            <div class="bus-number">Ônibus 821 - Zona Leste ↔ Zona Oeste</div>
-            <div class="bus-distance">📍 A 6 paradas de distância</div>
-            <div class="bus-distance">⏱️ Chega em ~18 minutos</div>
-        </div>
-        
-        <div class="bus-location">
-            <div class="bus-number">Ônibus 933 - Estádio ↔ Teatro Municipal</div>
-            <div class="bus-distance">📍 A 9 paradas de distância</div>
-            <div class="bus-distance">⏱️ Chega em ~25 minutos</div>
-        </div>
-        
-        <div class="bus-location">
-            <div class="bus-number">Ônibus 1040 - Museu ↔ Biblioteca</div>
-            <div class="bus-distance">📍 A 8 paradas de distância</div>
-            <div class="bus-distance">⏱️ Chega em ~22 minutos</div>
+            <div class="bus-location">
+                <div class="bus-number">Ônibus 402 - Shopping ↔ Universidade</div>
+                <div class="bus-distance">📍 A 7 paradas de distância</div>
+                <div class="bus-distance">⏱️ Chega em ~20 minutos</div>
+            </div>
+            
+            <div class="bus-location">
+                <div class="bus-number">Ônibus 507 - Hospital ↔ Rodoviária</div>
+                <div class="bus-distance">📍 A 3 paradas de distância</div>
+                <div class="bus-distance">⏱️ Chega em ~10 minutos</div>
+            </div>
+            
+            <div class="bus-location">
+                <div class="bus-number">Ônibus 608 - Parque ↔ Aeroporto</div>
+                <div class="bus-distance">📍 A 12 paradas de distância</div>
+                <div class="bus-distance">⏱️ Chega em ~35 minutos</div>
+            </div>
+            
+            <div class="bus-location">
+                <div class="bus-number">Ônibus 714 - Praia ↔ Centro Comercial</div>
+                <div class="bus-distance">📍 A 4 paradas de distância</div>
+                <div class="bus-distance">⏱️ Chega em ~12 minutos</div>
+            </div>
+            
+            <div class="bus-location">
+                <div class="bus-number">Ônibus 821 - Zona Leste ↔ Zona Oeste</div>
+                <div class="bus-distance">📍 A 6 paradas de distância</div>
+                <div class="bus-distance">⏱️ Chega em ~18 minutos</div>
+            </div>
+            
+            <div class="bus-location">
+                <div class="bus-number">Ônibus 933 - Estádio ↔ Teatro Municipal</div>
+                <div class="bus-distance">📍 A 9 paradas de distância</div>
+                <div class="bus-distance">⏱️ Chega em ~25 minutos</div>
+            </div>
+            
+            <div class="bus-location">
+                <div class="bus-number">Ônibus 1040 - Museu ↔ Biblioteca</div>
+                <div class="bus-distance">📍 A 8 paradas de distância</div>
+                <div class="bus-distance">⏱️ Chega em ~22 minutos</div>
+            </div>
+            
+            <div class="scroll-indicator">
+                ↑ Continue rolando para ver mais ônibus ↑
+            </div>
         </div>
     </div>
 
@@ -553,6 +640,9 @@
             } else if (page === 'localizacao') {
                 document.getElementById('localizacao-page').style.display = 'block';
             }
+            
+            // Rola para o topo quando muda de página
+            window.scrollTo(0, 0);
         }
 
         // Função para selecionar forma de pagamento
@@ -578,6 +668,13 @@
         window.onload = function() {
             navigateTo('main');
         }
+
+        // Previne o zoom em double-tap em dispositivos móveis
+        document.addEventListener('touchend', function(e) {
+            if (e.touches && e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
     </script>
 </body>
 </html>
