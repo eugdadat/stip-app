@@ -188,16 +188,18 @@
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 0;
             background-color: #000;
         }
 
         .page-header {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            padding: 10px 0;
+            margin-bottom: 0;
+            padding: 20px 20px 15px 20px;
             flex-shrink: 0;
+            background-color: #000;
+            border-bottom: 1px solid #333;
         }
 
         .back-button {
@@ -220,6 +222,7 @@
             flex: 1;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
+            padding: 0 20px 20px 20px;
         }
 
         .payment-option {
@@ -277,17 +280,29 @@
             color: #ffd700;
             font-size: 16px;
             margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bus-line .route-icon {
+            color: #ffd700;
+            font-size: 14px;
         }
 
         .bus-time {
             font-size: 14px;
             margin-top: 5px;
             padding-left: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .bus-time:before {
-            content: "• ";
+            content: "•";
             color: #ffd700;
+            margin-right: 5px;
         }
 
         .bus-location {
@@ -354,6 +369,11 @@
             50% { opacity: 1; }
             100% { opacity: 0.7; }
         }
+
+        /* URL transparente - removendo qualquer barra de endereço visual */
+        .url-overlay {
+            display: none; /* Completamente escondido */
+        }
     </style>
 </head>
 <body>
@@ -361,6 +381,9 @@
     <div class="swipe-indicator" id="swipeIndicator">
         ← Deslize para voltar
     </div>
+
+    <!-- Overlay para URL (completamente transparente) -->
+    <div class="url-overlay"></div>
 
     <!-- Página Principal -->
     <div id="main-page">
@@ -472,33 +495,129 @@
             
             <div class="page-content">
                 <div class="bus-info">
-                    <div class="bus-line">Linha 101 - Centro ↔ Jardim</div>
+                    <div class="bus-line">
+                        <i class="route-icon fas fa-bus"></i>
+                        Linha 101 - Centro ↔ Jardim
+                    </div>
                     <div class="bus-time">Próximo ônibus: 14:25</div>
                     <div class="bus-time">Segundo: 14:45</div>
                 </div>
                 
                 <div class="bus-info">
-                    <div class="bus-line">Linha 203 - Terminal ↔ Zona Norte</div>
+                    <div class="bus-line">
+                        <i class="route-icon fas fa-bus"></i>
+                        Linha 203 - Terminal ↔ Zona Norte
+                    </div>
                     <div class="bus-time">Próximo ônibus: 14:30</div>
                     <div class="bus-time">Segundo: 15:00</div>
                 </div>
                 
                 <div class="bus-info">
-                    <div class="bus-line">Linha 305 - Estação ↔ Bairro Industrial</div>
+                    <div class="bus-line">
+                        <i class="route-icon fas fa-bus"></i>
+                        Linha 305 - Estação ↔ Bairro Industrial
+                    </div>
                     <div class="bus-time">Próximo ônibus: 14:35</div>
                     <div class="bus-time">Segundo: 15:05</div>
                 </div>
 
                 <div class="bus-info">
-                    <div class="bus-line">Linha 402 - Shopping ↔ Universidade</div>
+                    <div class="bus-line">
+                        <i class="route-icon fas fa-bus"></i>
+                        Linha 402 - Shopping ↔ Universidade
+                    </div>
                     <div class="bus-time">Próximo ônibus: 14:40</div>
                     <div class="bus-time">Segundo: 15:10</div>
                 </div>
                 
                 <div class="bus-info">
-                    <div class="bus-line">Linha 507 - Hospital ↔ Rodoviária</div>
+                    <div class="bus-line">
+                        <i class="route-icon fas fa-bus"></i>
+                        Linha 507 - Hospital ↔ Rodoviária
+                    </div>
                     <div class="bus-time">Próximo ônibus: 14:45</div>
                     <div class="bus-time">Segundo: 15:15</div>
+                </div>
+                
+                <div class="bus-info">
+                    <div class="bus-line">
+                        <i class="route-icon fas fa-bus"></i>
+                        Linha 608 - Parque ↔ Aeroporto
+                    </div>
+                    <div class="bus-time">Próximo ônibus: 14:50</div>
+                    <div class="bus-time">Segundo: 15:20</div>
+                </div>
+                
+                <div class="bus-info">
+                    <div class="bus-line">
+                        <i class="route-icon fas fa-bus"></i>
+                        Linha 714 - Praia ↔ Centro Comercial
+                    </div>
+                    <div class="bus-time">Próximo ônibus: 14:55</div>
+                    <div class="bus-time">Segundo: 15:25</div>
+                </div>
+                
+                <div class="bus-info">
+                    <div class="bus-line">
+                        <i class="route-icon fas fa-bus"></i>
+                        Linha 821 - Zona Leste ↔ Zona Oeste
+                    </div>
+                    <div class="bus-time">Próximo ônibus: 15:00</div>
+                    <div class="bus-time">Segundo: 15:30</div>
+                </div>
+                
+                <div class="bus-info">
+                    <div class="bus-line">
+                        <i class="route-icon fas fa-bus"></i>
+                        Linha 933 - Estádio ↔ Teatro Municipal
+                    </div>
+                    <div class="bus-time">Próximo ônibus: 15:05</div>
+                    <div class="bus-time">Segundo: 15:35</div>
+                </div>
+                
+                <div class="bus-info">
+                    <div class="bus-line">
+                        <i class="route-icon fas fa-bus"></i>
+                        Linha 1040 - Museu ↔ Biblioteca
+                    </div>
+                    <div class="bus-time">Próximo ônibus: 15:10</div>
+                    <div class="bus-time">Segundo: 15:40</div>
+                </div>
+
+                <div class="bus-info">
+                    <div class="bus-line">
+                        <i class="route-icon fas fa-bus"></i>
+                        Linha 1150 - Centro ↔ Shopping Norte
+                    </div>
+                    <div class="bus-time">Próximo ônibus: 15:15</div>
+                    <div class="bus-time">Segundo: 15:45</div>
+                </div>
+
+                <div class="bus-info">
+                    <div class="bus-line">
+                        <i class="route-icon fas fa-bus"></i>
+                        Linha 1260 - Terminal Sul ↔ Universidade
+                    </div>
+                    <div class="bus-time">Próximo ônibus: 15:20</div>
+                    <div class="bus-time">Segundo: 15:50</div>
+                </div>
+
+                <div class="bus-info">
+                    <div class="bus-line">
+                        <i class="route-icon fas fa-bus"></i>
+                        Linha 1370 - Parque Industrial ↔ Centro
+                    </div>
+                    <div class="bus-time">Próximo ônibus: 15:25</div>
+                    <div class="bus-time">Segundo: 15:55</div>
+                </div>
+
+                <div class="bus-info">
+                    <div class="bus-line">
+                        <i class="route-icon fas fa-bus"></i>
+                        Linha 1480 - Hospital Municipal ↔ Rodoviária
+                    </div>
+                    <div class="bus-time">Próximo ônibus: 15:30</div>
+                    <div class="bus-time">Segundo: 16:00</div>
                 </div>
             </div>
         </div>
@@ -634,6 +753,11 @@
                     e.preventDefault();
                 }
             }, { passive: false });
+
+            // Esconde a barra de endereço em mobile (quando possível)
+            setTimeout(function() {
+                window.scrollTo(0, 1);
+            }, 0);
         }
 
         // Previne o zoom em double-tap
@@ -645,6 +769,13 @@
             }
             lastTouchEnd = now;
         }, false);
+
+        // Tenta esconder a barra de endereço
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                window.scrollTo(0, 1);
+            }, 100);
+        });
     </script>
 </body>
 </html>
